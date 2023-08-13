@@ -2,6 +2,7 @@ import os
 import webbrowser
 from imgurpython import ImgurClient
 from concurrent.futures import ThreadPoolExecutor
+import shutil  # Import the shutil module for file operations
 
 # Replace with your own Imgur API credentials
 client_id = '36502433b94e9fd'
@@ -12,6 +13,9 @@ client = ImgurClient(client_id, client_secret)
 
 # Path to the folder containing images
 image_folder = r'C:\SeeMTA\screenshots'
+
+# Path to the folder where uploaded images will be moved
+uploaded_folder = r'C:\SeeMTA\screenshots\Leadott'
 
 # List all image files in the folder
 image_files = [os.path.join(image_folder, filename) for filename in os.listdir(image_folder) if
@@ -29,6 +33,11 @@ def upload_and_open_link(path):
         webbrowser.open_new_tab(image_url)
 
         print(f"Image uploaded and link opened: {image_url}")
+
+        # Move the uploaded image to the 'Leadott' folder
+        target_path = os.path.join(uploaded_folder, os.path.basename(path))
+        shutil.move(path, target_path)
+        print(f"Image moved to 'Leadott' folder: {target_path}")
     except Exception as e:
         print(f"Error uploading image '{path}': {e}")
     finally:
